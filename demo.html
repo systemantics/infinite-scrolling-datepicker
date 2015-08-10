@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sys Datepicker demo</title>
+	<style type="text/css">
+		html {
+			font-family: sans-serif;
+			margin: 20px;
+		}
+
+		input {
+			font-size: 1.2em;
+		}
+
+		.sys-datepicker {
+			height: 300px;
+			position: relative;
+			border: 1px solid #000;
+			border-radius: 5px;
+			font-family: sans-serif;
+		}
+
+		.sys-datepicker-content {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+
+		.sys-datepicker-body {
+			overflow: scroll;
+			position: relative;
+			height: 100%;
+			clear: left;
+			width: calc(100% + 15px);
+		}
+
+		.sys-datepicker-day,
+		.sys-datepicker-days-dow,
+		.sys-datepicker-placeholder {
+			float: left;
+			text-align: center;
+		}
+
+		.sys-datepicker-day,
+		.sys-datepicker-placeholder {
+			box-sizing: border-box;
+			cursor: pointer;
+			border-radius: 5px;
+			padding-top: 6px;
+			margin: 2.5px;
+			width: 30px;
+			height: 30px;
+		}
+
+		.sys-datepicker-days-dow {
+			width: 30px;
+			margin: 2.5px;
+		}
+
+		.sys-datepicker-day-weekend {
+			color: #ccc;
+		}
+
+		.sys-datepicker-days {
+			clear: left;
+			float: left;
+			font-size: .8rem;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+
+		.sys-datepicker-month {
+			width: 245px;
+			clear: left;
+			float: left;
+			padding: 0 2.5px;
+		}
+
+		.sys-datepicker-month-header {
+			padding: 5px 2.5px;
+		}
+
+		.sys-datepicker-year {
+			clear: left;
+			float: left;
+		}
+
+		.sys-datepicker-buttons {
+			box-sizing: border-box;
+			text-align: justify;
+			height: 25px;
+			padding: 2px 10px;
+			background: #ccc;
+		}
+
+		.sys-datepicker-buttons:after {
+			content: "";
+			width: 100%;
+			display: inline-block;
+		}
+
+		.sys-datepicker-button {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			background: #ccc;
+			cursor: pointer;
+			border-radius: 5px;
+			font-size: .8rem;
+			line-height: 1.4;
+			text-align: center
+		}
+
+		.sys-datepicker-button + .sys-datepicker-button {
+			margin-left: 10px;
+		}
+
+		.sys-datepicker-day-selected {
+			background: #ccc;
+		}
+
+		.sys-datepicker-hover {
+			background: #000;
+			color: #fff;
+		}
+
+		.sys-datepicker-day-today {
+			background: #ccc;
+			color: #000;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		Enter date: <input type="text">
+	</div>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="js/sys.datepicker.js"></script>
+	<script>
+		$(function () {
+			$('input').datepicker({
+				onSelect: function (date) {
+					$(this).datepicker('addDates', date);
+				},
+				firstDay: 1
+			});
+		});
+	</script>
+</body>
+</html>
