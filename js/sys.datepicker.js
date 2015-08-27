@@ -155,7 +155,12 @@
 				defaultDate: getTodayISO(),
 				monthNames: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
 				dayNamesMin: [ "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" ],
-				firstDay: 0
+				firstDay: 0,
+				prevYearText: '&lt;&lt;',
+				prevText: '&lt;',
+				todayText: 'today',
+				nextText: '&gt;',
+				nextYearText: '&gt;&gt;'
 			}, options);
 
 			this.each(function () {
@@ -172,7 +177,7 @@
 					dpContent = $('<div class="sys-datepicker-content"/>').appendTo(dp),
 					// Note on the spaces between elements in the next line: this is required for text-align:justify to work
 					// See http://stackoverflow.com/questions/12822068/dom-equidistant-divs-with-inline-blocks-and-text-justify-wont-work-when-inserti#12822407
-					dpHeader = $('<div class="sys-datepicker-header"><div class="sys-datepicker-buttons"><div class="sys-datepicker-button sys-datepicker-button-prevyear">&lt;&lt;</div> <div class="sys-datepicker-button sys-datepicker-button-prevmonth">&lt;</div> <div class="sys-datepicker-button sys-datepicker-button-today">&middot;</div> <div class="sys-datepicker-button sys-datepicker-button-nextmonth">&gt;</div> <div class="sys-datepicker-button sys-datepicker-button-nextyear">&gt;&gt;</div></div></div>').appendTo(dpContent),
+					dpHeader = $('<div class="sys-datepicker-header"><div class="sys-datepicker-buttons"><div class="sys-datepicker-button sys-datepicker-button-prevyear">' + settings.prevYearText + '</div> <div class="sys-datepicker-button sys-datepicker-button-prevmonth">' + settings.prevText + '</div> <div class="sys-datepicker-button sys-datepicker-button-today">' + settings.todayText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextmonth">' + settings.nextText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextyear">' + settings.nextYearText + '</div></div></div>').appendTo(dpContent),
 					dpBody = $('<div class="sys-datepicker-body"/>').appendTo(dpContent),
 					selectedDates = [];
 
