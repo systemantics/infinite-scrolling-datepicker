@@ -183,11 +183,12 @@
 
 				var dpDayHeaders = $('<div class="sys-datepicker-days"/>').appendTo(dpHeader);
 				for (var i = settings.firstDay; i <= settings.firstDay + 6; i++) {
-					var dayHeaderHtml = '<div class="sys-datepicker-days-dow';
-					if (i == 0 || i == 6) {
+					var dayHeaderHtml = '<div class="sys-datepicker-days-dow',
+						dow = i % 7;
+					if (dow == 0 || dow == 6) {
 						dayHeaderHtml = dayHeaderHtml + ' sys-datepicker-day-weekend';
 					}
-					$(dayHeaderHtml + '">' + (settings.dayNamesMin[i % 7] + '</div>')).appendTo(dpDayHeaders);
+					$(dayHeaderHtml + '">' + (settings.dayNamesMin[dow] + '</div>')).appendTo(dpDayHeaders);
 				}
 
 				populate(dp, settings);
