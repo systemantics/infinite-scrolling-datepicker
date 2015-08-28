@@ -13,6 +13,8 @@
 		}
 
 		.sys-datepicker {
+			background-color: #fff;
+			box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.1);
 			height: 300px;
 			position: relative;
 			border: 1px solid #000;
@@ -123,6 +125,7 @@
 
 		.sys-datepicker-day-selected {
 			background: #ccc;
+			color: #000;
 		}
 
 		.sys-datepicker-hover {
@@ -134,21 +137,81 @@
 			background: #ccc;
 			color: #000;
 		}
+
+		#multiple-selected {
+			list-style: none;
+		}
+
+		#multiple-selected li {
+			display: inline-block;
+			padding-right: 15px;
+			margin-right: 20px;
+			position: relative;;
+		}
+
+		#multiple-selected li:hover {
+			color: #ccc;
+			cursor: pointer;
+		}
+
+		#multiple-selected li:after {
+			content: "x";
+			position: absolute;
+			right: 0;
+		}
 	</style>
 </head>
 <body>
+	<h1>Systemantics infinite scrolling Datepicker demo</h1>
+	<h2>Default datepicker</h2>
 	<div>
-		Enter date: <input type="text">
+		Enter date: <input id="datepicker-default" type="text">
 	</div>
+	<p>Note the datepicker is fully styleable with CSS, so the above look is just what we made up in the HTML.</p>
+	<h2>Localization</h2>
+	<div>
+		<p>Enter German date: <input id="datepicker-german" type="text"></p>
+		<p>Enter French date: <input id="datepicker-french" type="text"></p>
+		<p>Enter Spanish date: <input id="datepicker-spanish" type="text"></p>
+	</div>
+	<p>Our datepicker works with all the I18N settings from the <a href="http://api.jqueryui.com/datepicker/">jQuery UI datepicker</a>, so you can keep using your settings. Localization from the jQuery UI datepicker files can be found at <a href="https://github.com/jquery/jquery-ui/tree/master/ui/i18n">https://github.com/jquery/jquery-ui/tree/master/ui/i18n</a>.</p>
+	<h2>Pick multiple dates</h2>
+	<div>
+		<p>
+			Already picked:
+		</p>
+		<ul id="multiple-selected">
+		</ul>
+		<p>Pick another date: <input id="datepicker-multiple" type="text"></p>
+	</div>
+	<p>You can easily create multi date pickers by using the API methods for selecting and removing a date, respectively.</p>
 	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script>
+		// Datepicker stub to use the regional configs from jQuery UI datepicker
+		$.datepicker = {
+			regional: [],
+			setDefaults: function () {}
+		};
+	</script>
+	<script src="js/datepicker-de.js"></script>
+	<script src="js/datepicker-es.js"></script>
+	<script src="js/datepicker-fr.js"></script>
 	<script src="js/sys.datepicker.js"></script>
 	<script>
 		$(function () {
-			$('input').datepicker({
+			$('#datepicker-default').datepicker();
+			$('#datepicker-german').datepicker($.datepicker.regional['de']);
+			$('#datepicker-french').datepicker($.datepicker.regional['fr']);
+			$('#datepicker-spanish').datepicker($.datepicker.regional['es']);
+			$('#datepicker-multiple').datepicker({
 				onSelect: function (date) {
 					$(this).datepicker('addDates', date);
-				},
-				firstDay: 1
+					$('#multiple-selected').append('<li data-date="' + date + '">' + date + '</li>');
+				}
+			});
+			$(document).on('click', '#multiple-selected li', function () {
+				$(this).remove();
+				$('#datepicker-multiple').datepicker('removeDates', $(this).data('date'));
 			});
 		});
 	</script>
