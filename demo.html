@@ -167,7 +167,7 @@
 	<div>
 		Enter date: <input id="datepicker-default" type="text">
 	</div>
-	<p>Note the datepicker is fully styleable with CSS, so the above look is just what we made up in the HTML.</p>
+	<p>Note that <em>any part of the datepicker can be styled with CSS</em>, so the above look is just what we made up in the HTML.</p>
 	<h2>Localization of the UI</h2>
 	<div>
 		<p>Enter German date: <input id="datepicker-german" type="text"></p>
@@ -204,9 +204,21 @@
 	<script>
 		$(function () {
 			$('#datepicker-default').datepicker();
-			$('#datepicker-german').datepicker($.datepicker.regional['de']);
-			$('#datepicker-french').datepicker($.datepicker.regional['fr']);
-			$('#datepicker-spanish').datepicker($.datepicker.regional['es']);
+			$('#datepicker-german').datepicker({
+				monthNames: ['Januar','Februar','März','April','Mai','Juni', 'Juli','August','September','Oktober','November','Dezember'],
+				dayNamesMin: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+				firstDay: 1
+			});
+			$('#datepicker-french').datepicker({
+				monthNames: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+				dayNamesMin: ['D','L','M','M','J','V','S'],
+				firstDay: 1
+			});
+			$('#datepicker-spanish').datepicker({
+				monthNames: ['enero','febrero','marzo','abril','mayo','junio', 'julio','agosto','septiembre','octubre','noviembre','diciembre'],
+				dayNamesMin: ['D','L','M','X','J','V','S'],
+				firstDay: 1
+			});
 			$('#datepicker-yymmdd').datepicker({
 				convertISOToDisplayDate: function (isoDate) {
 					return isoDate.substr(5, 2) + '/' + isoDate.substr(8, 2) + '/' + isoDate.substr(2, 2);
