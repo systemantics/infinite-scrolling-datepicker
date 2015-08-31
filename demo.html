@@ -168,13 +168,20 @@
 		Enter date: <input id="datepicker-default" type="text">
 	</div>
 	<p>Note the datepicker is fully styleable with CSS, so the above look is just what we made up in the HTML.</p>
-	<h2>Localization</h2>
+	<h2>Localization of the UI</h2>
 	<div>
 		<p>Enter German date: <input id="datepicker-german" type="text"></p>
 		<p>Enter French date: <input id="datepicker-french" type="text"></p>
 		<p>Enter Spanish date: <input id="datepicker-spanish" type="text"></p>
 	</div>
 	<p>Our datepicker works with all the I18N settings from the <a href="http://api.jqueryui.com/datepicker/">jQuery UI datepicker</a>, so you can keep using your settings. Localization from the jQuery UI datepicker files can be found at <a href="https://github.com/jquery/jquery-ui/tree/master/ui/i18n">https://github.com/jquery/jquery-ui/tree/master/ui/i18n</a>.</p>
+	<h2>Customize the format of the displayed date</h2>
+		<p>Enter date as MM/DD/YY: <input id="datepicker-yymmdd" type="text"></p>
+	<p>By default, our datepicker works with dates in the <a href="https://en.wikipedia.org/wiki/ISO_8601#Calendar_dates">ISO 8601 format</a> YYYY-MM-DD. These have a couple of advantages,
+	like allowing an alphabetical sorting of date strings. Yet, ISO formatted dates are sometimes not desired as
+	display format in the input field the datepicker is attached to. Instead of providing display formats, our datepicker
+	provides two callbacks to convert from the ISO date format to the display date format and back. That way, you can
+	support any desired display date format and don’t have to rely on the available pre-implemented conversions.</p>
 	<h2>Pick multiple dates</h2>
 	<div>
 		<p>
@@ -184,7 +191,7 @@
 		</ul>
 		<p>Pick another date: <input id="datepicker-multiple" type="text"></p>
 	</div>
-	<p>You can easily create multi date pickers by using the API methods for selecting and removing a date, respectively.</p>
+	<p>You can easily implement multi date pickers by using the API methods for selecting and removing a date, respectively.</p>
 	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script>
 		// Datepicker stub to use the regional configs from jQuery UI datepicker
@@ -203,6 +210,19 @@
 			$('#datepicker-german').datepicker($.datepicker.regional['de']);
 			$('#datepicker-french').datepicker($.datepicker.regional['fr']);
 			$('#datepicker-spanish').datepicker($.datepicker.regional['es']);
+			$('#datepicker-yymmdd').datepicker({
+				convertISOToDisplayDate: function (isoDate) {
+					return isoDate.substr(5, 2) + '/' + isoDate.substr(8, 2) + '/' + isoDate.substr(2, 2);
+				},
+				convertDisplayDateToISO: function (displayDate) {
+					var matches = displayDate.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/);
+
+					if (!!matches) {
+						return ('20' + matches[3]).substr(-4) + '-' + ('0' + matches[1]).substr(-2) + '-' + ('0' + matches[2]).substr(-2);
+					}
+					return '';
+				}
+			});
 			$('#datepicker-multiple').datepicker({
 				onSelect: function (date) {
 					$(this).datepicker('addDates', date);

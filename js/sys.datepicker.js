@@ -160,7 +160,9 @@
 				prevText: '&lt;',
 				todayText: 'today',
 				nextText: '&gt;',
-				nextYearText: '&gt;&gt;'
+				nextYearText: '&gt;&gt;',
+				convertISOToDisplayDate: false,
+				convertDisplayDateToISO: false
 			}, options);
 
 			this.each(function () {
@@ -225,9 +227,19 @@
 
 				el.on('keyup change', function () {
 					var val = $(this).val(),
-						comp = val.trim().match(/^(\d{4})(-((\d{2})(-(\d{2})?)?)?)?$/),
+						comp,
 						year,
 						month;
+
+					if ($.isFunction(settings.convertDisplayDateToISO)) {
+						val = settings.convertDisplayDateToISO(val);
+						console.log(val);
+						if (typeof val !== 'string' && !(val instanceof String)) {
+							return;
+						}
+					}
+
+					comp = val.trim().match(/^(\d{4})(-((\d{2})(-(\d{2})?)?)?)?$/);
 
 					if (!!comp && !!comp[1]) {
 						year = parseInt(comp[1]);
@@ -245,6 +257,10 @@
 
 				dp.on('click', '.sys-datepicker-day', function () {
 					var date = $(this).data("date");
+
+					if ($.isFunction(settings.convertISOToDisplayDate)) {
+						date = settings.convertISOToDisplayDate(date);
+					}
 
 					// Set value
 					el.val(date);
