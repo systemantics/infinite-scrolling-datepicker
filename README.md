@@ -8,6 +8,12 @@ The answer is simple: Because it’s infinitely scrolling.
 Most (if not all) datepickers resemble traditional paper calendars with one month on view
 at a time. In a digital setting with virtually endless viewports, this is an unnecessary limitation.
 
+## Demo and examples
+
+A [demo page with several examples](https://www.systemantics.net/datepicker/demo.html) is available.
+
+The demo page (`demo.html`) is also available in the repository.
+
 ## Usage
 
 Using the datepicker is easy:
