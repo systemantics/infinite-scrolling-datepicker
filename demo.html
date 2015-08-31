@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sys Datepicker demo</title>
+	<style type="text/css">
+		html {
+			font-family: sans-serif;
+			margin: 20px;
+		}
+
+		input {
+			font-size: 1.2em;
+		}
+
+		.sys-datepicker {
+			background-color: #fff;
+			box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.1);
+			height: 300px;
+			position: relative;
+			border: 1px solid #000;
+			border-radius: 5px;
+			font-family: sans-serif;
+		}
+
+		.sys-datepicker-content {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+
+		.sys-datepicker-body {
+			overflow: scroll;
+			-webkit-overflow-scrolling: touch;
+			position: relative;
+			height: 100%;
+			clear: left;
+			width: calc(100% + 15px);
+		}
+
+		.sys-datepicker-day,
+		.sys-datepicker-days-dow,
+		.sys-datepicker-placeholder {
+			float: left;
+			text-align: center;
+		}
+
+		.sys-datepicker-day,
+		.sys-datepicker-placeholder {
+			box-sizing: border-box;
+			cursor: pointer;
+			border-radius: 5px;
+			padding-top: 6px;
+			margin: 2.5px;
+			width: 30px;
+			height: 30px;
+		}
+
+		.sys-datepicker-days-dow {
+			width: 30px;
+			margin: 2.5px;
+		}
+
+		.sys-datepicker-day-weekend {
+			color: #ccc;
+		}
+
+		.sys-datepicker-days {
+			clear: left;
+			float: left;
+			font-size: .8rem;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+
+		.sys-datepicker-month {
+			width: 245px;
+			clear: left;
+			float: left;
+			padding: 0 2.5px;
+		}
+
+		.sys-datepicker-month-header {
+			padding: 5px 2.5px;
+		}
+
+		.sys-datepicker-year {
+			clear: left;
+			float: left;
+		}
+
+		.sys-datepicker-buttons {
+			box-sizing: border-box;
+			text-align: justify;
+			height: 25px;
+			padding: 2px 10px;
+			background: #ccc;
+		}
+
+		.sys-datepicker-buttons:after {
+			content: "";
+			width: 100%;
+			display: inline-block;
+		}
+
+		.sys-datepicker-button {
+			display: inline-block;
+			min-width: 20px;
+			height: 20px;
+			background: #ccc;
+			cursor: pointer;
+			border-radius: 5px;
+			font-size: .8rem;
+			line-height: 1.4;
+			text-align: center
+		}
+
+		.sys-datepicker-button + .sys-datepicker-button {
+			margin-left: 10px;
+		}
+
+		.sys-datepicker-button-today {
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+
+		.sys-datepicker-day-selected {
+			background: #ccc;
+			color: #000;
+		}
+
+		.sys-datepicker-hover {
+			background: #000;
+			color: #fff;
+		}
+
+		.sys-datepicker-day-today {
+			background: #ccc;
+			color: #000;
+		}
+
+		#multiple-selected {
+			list-style: none;
+		}
+
+		#multiple-selected li {
+			display: inline-block;
+			padding-right: 15px;
+			margin-right: 20px;
+			position: relative;;
+		}
+
+		#multiple-selected li:hover {
+			color: #ccc;
+			cursor: pointer;
+		}
+
+		#multiple-selected li:after {
+			content: "x";
+			position: absolute;
+			right: 0;
+		}
+	</style>
+</head>
+<body>
+	<h1>Systemantics infinite scrolling Datepicker demo</h1>
+	<h2>Default datepicker</h2>
+	<div>
+		Enter date: <input id="datepicker-default" type="text">
+	</div>
+	<p>Note that <em>any part of the datepicker can be styled with CSS</em>, so the above look is just what we made up in the HTML.</p>
+	<h2>Localization of the UI</h2>
+	<div>
+		<p>Enter German date: <input id="datepicker-german" type="text"></p>
+		<p>Enter French date: <input id="datepicker-french" type="text"></p>
+		<p>Enter Spanish date: <input id="datepicker-spanish" type="text"></p>
+	</div>
+	<p>Our datepicker works with all the I18N settings from the <a href="http://api.jqueryui.com/datepicker/">jQuery UI datepicker</a>, so you can keep using your settings. Localization from the jQuery UI datepicker files can be found at <a href="https://github.com/jquery/jquery-ui/tree/master/ui/i18n">https://github.com/jquery/jquery-ui/tree/master/ui/i18n</a>.</p>
+	<h2>Customize the format of the displayed date</h2>
+		<p>Enter date as MM/DD/YY: <input id="datepicker-yymmdd" type="text"></p>
+	<p>By default, our datepicker works with dates in the <a href="https://en.wikipedia.org/wiki/ISO_8601#Calendar_dates">ISO 8601 format</a> YYYY-MM-DD. These have a couple of advantages,
+	like allowing an alphabetical sorting of date strings. Yet, ISO formatted dates are sometimes not desired as
+	display format in the input field the datepicker is attached to. Instead of providing display formats, our datepicker
+	provides two callbacks to convert from the ISO date format to the display date format and back. That way, you can
+	support any desired display date format and don’t have to rely on the available pre-implemented conversions.</p>
+	<h2>Pick multiple dates</h2>
+	<div>
+		<p>
+			Already picked:
+		</p>
+		<ul id="multiple-selected">
+		</ul>
+		<p>Pick another date: <input id="datepicker-multiple" type="text"></p>
+	</div>
+	<p>You can easily implement multi date pickers by using the API methods for selecting and removing a date, respectively.</p>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script>
+		// Datepicker stub to use the regional configs from jQuery UI datepicker
+		$.datepicker = {
+			regional: [],
+			setDefaults: function () {}
+		};
+	</script>
+	<script src="js/sys.datepicker.js"></script>
+	<script>
+		$(function () {
+			$('#datepicker-default').datepicker();
+			$('#datepicker-german').datepicker({
+				monthNames: ['Januar','Februar','März','April','Mai','Juni', 'Juli','August','September','Oktober','November','Dezember'],
+				dayNamesMin: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+				firstDay: 1
+			});
+			$('#datepicker-french').datepicker({
+				monthNames: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+				dayNamesMin: ['D','L','M','M','J','V','S'],
+				firstDay: 1
+			});
+			$('#datepicker-spanish').datepicker({
+				monthNames: ['enero','febrero','marzo','abril','mayo','junio', 'julio','agosto','septiembre','octubre','noviembre','diciembre'],
+				dayNamesMin: ['D','L','M','X','J','V','S'],
+				firstDay: 1
+			});
+			$('#datepicker-yymmdd').datepicker({
+				convertISOToDisplayDate: function (isoDate) {
+					return isoDate.substr(5, 2) + '/' + isoDate.substr(8, 2) + '/' + isoDate.substr(2, 2);
+				},
+				convertDisplayDateToISO: function (displayDate) {
+					var matches = displayDate.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/);
+
+					if (!!matches) {
+						return ('20' + matches[3]).substr(-4) + '-' + ('0' + matches[1]).substr(-2) + '-' + ('0' + matches[2]).substr(-2);
+					}
+					return '';
+				}
+			});
+			$('#datepicker-multiple').datepicker({
+				onSelect: function (date) {
+					$(this).datepicker('addDates', date);
+					$('#multiple-selected').append('<li data-date="' + date + '">' + date + '</li>');
+				}
+			});
+			$(document).on('click', '#multiple-selected li', function () {
+				$(this).remove();
+				$('#datepicker-multiple').datepicker('removeDates', $(this).data('date'));
+			});
+		});
+	</script>
+</body>
+</html>

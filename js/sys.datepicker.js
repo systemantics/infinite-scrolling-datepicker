@@ -1,3 +1,15 @@
+/*
+ * Systemantics infinite scrolling datepicker
+ * v0.10
+ *
+ * Copyright (C) 2015 by Systemantics GmbH
+ *
+ * hello@systemantics.net
+ * http://www.systemantics.net/
+ *
+ * Licensed under the MIT license.
+ */
+
 (function ($) {
 	var numYears = 5;
 
@@ -6,7 +18,7 @@
 	}
 
 	function getMonthHtml(year, month, settings) {
-		var monthHtml = '<div class="sys-datepicker-month" data-year="' + year + '" data-month="' + month + '"><div class="sys-datepicker-month-header">' + settings.monthNames[month - 1] + ' ' + year + '</div>';
+		var monthHtml = '<div class="sys-datepicker-month" data-year="' + year + '" data-month="' + month + '"><div class="sys-datepicker-month-header">' + decodeURIComponent(escape(settings.monthNames[month - 1])) + ' ' + year + '</div>';
 
 		var date = new Date(formatDate(year, month, 1)),
 			daysPerMonth = month == 4 || month == 6 || month == 9 || month == 11 ? 30
@@ -155,7 +167,14 @@
 				defaultDate: getTodayISO(),
 				monthNames: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
 				dayNamesMin: [ "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" ],
-				firstDay: 0
+				firstDay: 0,
+				prevYearText: '&lt;&lt;',
+				prevText: '&lt;',
+				todayText: 'today',
+				nextText: '&gt;',
+				nextYearText: '&gt;&gt;',
+				convertISOToDisplayDate: false,
+				convertDisplayDateToISO: false
 			}, options);
 
 			this.each(function () {
@@ -172,17 +191,18 @@
 					dpContent = $('<div class="sys-datepicker-content"/>').appendTo(dp),
 					// Note on the spaces between elements in the next line: this is required for text-align:justify to work
 					// See http://stackoverflow.com/questions/12822068/dom-equidistant-divs-with-inline-blocks-and-text-justify-wont-work-when-inserti#12822407
-					dpHeader = $('<div class="sys-datepicker-header"><div class="sys-datepicker-buttons"><div class="sys-datepicker-button sys-datepicker-button-prevyear">&lt;&lt;</div> <div class="sys-datepicker-button sys-datepicker-button-prevmonth">&lt;</div> <div class="sys-datepicker-button sys-datepicker-button-today">&middot;</div> <div class="sys-datepicker-button sys-datepicker-button-nextmonth">&gt;</div> <div class="sys-datepicker-button sys-datepicker-button-nextyear">&gt;&gt;</div></div></div>').appendTo(dpContent),
+					dpHeader = $('<div class="sys-datepicker-header"><div class="sys-datepicker-buttons"><div class="sys-datepicker-button sys-datepicker-button-prevyear">' + settings.prevYearText + '</div> <div class="sys-datepicker-button sys-datepicker-button-prevmonth">' + settings.prevText + '</div> <div class="sys-datepicker-button sys-datepicker-button-today">' + settings.todayText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextmonth">' + settings.nextText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextyear">' + settings.nextYearText + '</div></div></div>').appendTo(dpContent),
 					dpBody = $('<div class="sys-datepicker-body"/>').appendTo(dpContent),
 					selectedDates = [];
 
 				var dpDayHeaders = $('<div class="sys-datepicker-days"/>').appendTo(dpHeader);
 				for (var i = settings.firstDay; i <= settings.firstDay + 6; i++) {
-					var dayHeaderHtml = '<div class="sys-datepicker-days-dow';
-					if (i == 0 || i == 6) {
+					var dayHeaderHtml = '<div class="sys-datepicker-days-dow',
+						dow = i % 7;
+					if (dow == 0 || dow == 6) {
 						dayHeaderHtml = dayHeaderHtml + ' sys-datepicker-day-weekend';
 					}
-					$(dayHeaderHtml + '">' + (settings.dayNamesMin[i % 7] + '</div>')).appendTo(dpDayHeaders);
+					$(dayHeaderHtml + '">' + (decodeURIComponent(escape(settings.dayNamesMin[dow])) + '</div>')).appendTo(dpDayHeaders);
 				}
 
 				populate(dp, settings);
@@ -219,9 +239,19 @@
 
 				el.on('keyup change', function () {
 					var val = $(this).val(),
-						comp = val.trim().match(/^(\d{4})(-((\d{2})(-(\d{2})?)?)?)?$/),
+						comp,
 						year,
 						month;
+
+					if ($.isFunction(settings.convertDisplayDateToISO)) {
+						val = settings.convertDisplayDateToISO(val);
+						console.log(val);
+						if (typeof val !== 'string' && !(val instanceof String)) {
+							return;
+						}
+					}
+
+					comp = val.trim().match(/^(\d{4})(-((\d{2})(-(\d{2})?)?)?)?$/);
 
 					if (!!comp && !!comp[1]) {
 						year = parseInt(comp[1]);
@@ -239,6 +269,10 @@
 
 				dp.on('click', '.sys-datepicker-day', function () {
 					var date = $(this).data("date");
+
+					if ($.isFunction(settings.convertISOToDisplayDate)) {
+						date = settings.convertISOToDisplayDate(date);
+					}
 
 					// Set value
 					el.val(date);
