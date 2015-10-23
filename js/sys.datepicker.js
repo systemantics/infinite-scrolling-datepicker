@@ -24,7 +24,7 @@
 			daysPerMonth = month == 4 || month == 6 || month == 9 || month == 11 ? 30
 				: (month == 2 ? (year & 3 || !(year % 25) && year & 15 ? 28 : 29) : 31);
 
-		for (var i = 0; i < (date.getDay() - settings.firstDay)%7; i++) {
+		for (var i = 0; i < (date.getDay() + 7 - settings.firstDay)%7; i++) {
 			monthHtml = monthHtml + '<div class="sys-datepicker-placeholder"/>';
 		}
 		var today = getTodayISO();
