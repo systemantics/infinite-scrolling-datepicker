@@ -1,6 +1,6 @@
 /*
  * Systemantics infinite scrolling datepicker
- * v0.10
+ * v0.11
  *
  * Copyright (C) 2015 by Systemantics GmbH
  *
@@ -18,13 +18,13 @@
 	}
 
 	function getMonthHtml(year, month, settings) {
-		var monthHtml = '<div class="sys-datepicker-month" data-year="' + year + '" data-month="' + month + '"><div class="sys-datepicker-month-header">' + decodeURIComponent(escape(settings.monthNames[month - 1])) + ' ' + year + '</div>';
+		var monthHtml = '<div class="sys-datepicker-month" data-year="' + year + '" data-month="' + month + '"><div class="sys-datepicker-month-header">' + settings.monthNames[month - 1] + ' ' + year + '</div>';
 
 		var date = new Date(formatDate(year, month, 1)),
 			daysPerMonth = month == 4 || month == 6 || month == 9 || month == 11 ? 30
 				: (month == 2 ? (year & 3 || !(year % 25) && year & 15 ? 28 : 29) : 31);
 
-		for (var i = 0; i < (date.getDay() - settings.firstDay)%7; i++) {
+		for (var i = 0; i < (date.getDay() + 7 - settings.firstDay)%7; i++) {
 			monthHtml = monthHtml + '<div class="sys-datepicker-placeholder"/>';
 		}
 		var today = getTodayISO();
@@ -170,7 +170,7 @@
 				firstDay: 0,
 				prevYearText: '&lt;&lt;',
 				prevText: '&lt;',
-				todayText: 'today',
+				currentText: 'Today',
 				nextText: '&gt;',
 				nextYearText: '&gt;&gt;',
 				convertISOToDisplayDate: false,
@@ -191,7 +191,7 @@
 					dpContent = $('<div class="sys-datepicker-content"/>').appendTo(dp),
 					// Note on the spaces between elements in the next line: this is required for text-align:justify to work
 					// See http://stackoverflow.com/questions/12822068/dom-equidistant-divs-with-inline-blocks-and-text-justify-wont-work-when-inserti#12822407
-					dpHeader = $('<div class="sys-datepicker-header"><div class="sys-datepicker-buttons"><div class="sys-datepicker-button sys-datepicker-button-prevyear">' + settings.prevYearText + '</div> <div class="sys-datepicker-button sys-datepicker-button-prevmonth">' + settings.prevText + '</div> <div class="sys-datepicker-button sys-datepicker-button-today">' + settings.todayText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextmonth">' + settings.nextText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextyear">' + settings.nextYearText + '</div></div></div>').appendTo(dpContent),
+					dpHeader = $('<div class="sys-datepicker-header"><div class="sys-datepicker-buttons"><div class="sys-datepicker-button sys-datepicker-button-prevyear">' + settings.prevYearText + '</div> <div class="sys-datepicker-button sys-datepicker-button-prevmonth">' + settings.prevText + '</div> <div class="sys-datepicker-button sys-datepicker-button-today">' + settings.currentText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextmonth">' + settings.nextText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextyear">' + settings.nextYearText + '</div></div></div>').appendTo(dpContent),
 					dpBody = $('<div class="sys-datepicker-body"/>').appendTo(dpContent),
 					selectedDates = [];
 
