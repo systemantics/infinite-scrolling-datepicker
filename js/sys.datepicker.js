@@ -170,7 +170,7 @@
 				firstDay: 0,
 				prevYearText: '&lt;&lt;',
 				prevText: '&lt;',
-				todayText: 'today',
+				currentText: 'Today',
 				nextText: '&gt;',
 				nextYearText: '&gt;&gt;',
 				convertISOToDisplayDate: false,
@@ -191,7 +191,7 @@
 					dpContent = $('<div class="sys-datepicker-content"/>').appendTo(dp),
 					// Note on the spaces between elements in the next line: this is required for text-align:justify to work
 					// See http://stackoverflow.com/questions/12822068/dom-equidistant-divs-with-inline-blocks-and-text-justify-wont-work-when-inserti#12822407
-					dpHeader = $('<div class="sys-datepicker-header"><div class="sys-datepicker-buttons"><div class="sys-datepicker-button sys-datepicker-button-prevyear">' + settings.prevYearText + '</div> <div class="sys-datepicker-button sys-datepicker-button-prevmonth">' + settings.prevText + '</div> <div class="sys-datepicker-button sys-datepicker-button-today">' + settings.todayText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextmonth">' + settings.nextText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextyear">' + settings.nextYearText + '</div></div></div>').appendTo(dpContent),
+					dpHeader = $('<div class="sys-datepicker-header"><div class="sys-datepicker-buttons"><div class="sys-datepicker-button sys-datepicker-button-prevyear">' + settings.prevYearText + '</div> <div class="sys-datepicker-button sys-datepicker-button-prevmonth">' + settings.prevText + '</div> <div class="sys-datepicker-button sys-datepicker-button-today">' + settings.currentText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextmonth">' + settings.nextText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextyear">' + settings.nextYearText + '</div></div></div>').appendTo(dpContent),
 					dpBody = $('<div class="sys-datepicker-body"/>').appendTo(dpContent),
 					selectedDates = [];
 
