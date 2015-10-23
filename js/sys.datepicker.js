@@ -18,7 +18,7 @@
 	}
 
 	function getMonthHtml(year, month, settings) {
-		var monthHtml = '<div class="sys-datepicker-month" data-year="' + year + '" data-month="' + month + '"><div class="sys-datepicker-month-header">' + decodeURIComponent(escape(settings.monthNames[month - 1])) + ' ' + year + '</div>';
+		var monthHtml = '<div class="sys-datepicker-month" data-year="' + year + '" data-month="' + month + '"><div class="sys-datepicker-month-header">' + settings.monthNames[month - 1] + ' ' + year + '</div>';
 
 		var date = new Date(formatDate(year, month, 1)),
 			daysPerMonth = month == 4 || month == 6 || month == 9 || month == 11 ? 30
