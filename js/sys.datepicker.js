@@ -1,6 +1,6 @@
 /*
  * Systemantics infinite scrolling datepicker
- * v0.10
+ * v0.11
  *
  * Copyright (C) 2015 by Systemantics GmbH
  *
