@@ -1,6 +1,6 @@
 /*
  * Systemantics infinite scrolling datepicker
- * v0.11
+ * v0.11.1
  *
  * Copyright (C) 2015 by Systemantics GmbH
  *
@@ -20,25 +20,31 @@
 	function getMonthHtml(year, month, settings) {
 		var monthHtml = '<div class="sys-datepicker-month" data-year="' + year + '" data-month="' + month + '"><div class="sys-datepicker-month-header">' + settings.monthNames[month - 1] + ' ' + year + '</div>';
 
-		var date = new Date(formatDate(year, month, 1)),
+		var monthsFirstDayOfWeek = (new Date(formatDate(year, month, 1))).getUTCDay(),
 			daysPerMonth = month == 4 || month == 6 || month == 9 || month == 11 ? 30
 				: (month == 2 ? (year & 3 || !(year % 25) && year & 15 ? 28 : 29) : 31);
 
-		for (var i = 0; i < (date.getDay() + 7 - settings.firstDay)%7; i++) {
+		for (var i = 0; i < (monthsFirstDayOfWeek + 7 - settings.firstDay)%7; i++) {
 			monthHtml = monthHtml + '<div class="sys-datepicker-placeholder"/>';
 		}
-		var today = getTodayISO();
+		var today = getTodayISO(),
+			dow = monthsFirstDayOfWeek;
 		for (var d = 1; d <= daysPerMonth; d++) {
 			var classes = [ 'sys-datepicker-day' ],
 				thisDate = formatDate(year, month, d);
 			if (thisDate == today) {
 				classes.push('sys-datepicker-day-today');
 			}
-			var dow = getDayOfWeek(thisDate);
 			if (dow == 0 || dow == 6) {
 				classes.push('sys-datepicker-day-weekend');
 			}
 			monthHtml = monthHtml + '<div class="' + classes.join(' ') + '" data-date="' + thisDate + '">' + d + '</div>';
+
+			// Increase date of the week
+			dow = dow + 1;
+			if (dow == 7) {
+				dow = 0;
+			}
 		}
 
 		monthHtml = monthHtml + '</div>';
@@ -142,10 +148,6 @@
 		var today = new Date();
 
 		return formatDate(today.getFullYear(), today.getMonth() + 1, today.getDate());
-	}
-
-	function getDayOfWeek(date) {
-		return (new Date(date)).getDay();
 	}
 
 	$.fn.datepicker = function (options, value) {
