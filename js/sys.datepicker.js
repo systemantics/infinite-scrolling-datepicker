@@ -2,7 +2,7 @@
  * Systemantics infinite scrolling datepicker
  * v0.11.1
  *
- * Copyright (C) 2015 by Systemantics GmbH
+ * Copyright (C) 2015–2016 by Systemantics GmbH
  *
  * hello@systemantics.net
  * http://www.systemantics.net/
