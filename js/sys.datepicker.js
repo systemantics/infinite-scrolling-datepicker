@@ -195,7 +195,8 @@
 					// See http://stackoverflow.com/questions/12822068/dom-equidistant-divs-with-inline-blocks-and-text-justify-wont-work-when-inserti#12822407
 					dpHeader = $('<div class="sys-datepicker-header"><div class="sys-datepicker-buttons"><div class="sys-datepicker-button sys-datepicker-button-prevyear">' + settings.prevYearText + '</div> <div class="sys-datepicker-button sys-datepicker-button-prevmonth">' + settings.prevText + '</div> <div class="sys-datepicker-button sys-datepicker-button-today">' + settings.currentText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextmonth">' + settings.nextText + '</div> <div class="sys-datepicker-button sys-datepicker-button-nextyear">' + settings.nextYearText + '</div></div></div>').appendTo(dpContent),
 					dpBody = $('<div class="sys-datepicker-body"/>').appendTo(dpContent),
-					selectedDates = [];
+					selectedDates = [],
+					inputDate = '';
 
 				var dpDayHeaders = $('<div class="sys-datepicker-days"/>').appendTo(dpHeader);
 				for (var i = settings.firstDay; i <= settings.firstDay + 6; i++) {
@@ -239,6 +240,7 @@
 					}
 				});
 
+				var prevVal = null;
 				el.on('keyup change', function () {
 					var val = $(this).val(),
 						comp,
@@ -258,6 +260,7 @@
 						year = parseInt(comp[1]);
 						month = !!comp[3] ? Math.max(1, Math.min(12, parseInt(comp[3]))) : 1;
 						gotoYearMonth(dp, year, month, settings);
+						setInputDate(val.trim());
 					}
 				});
 
@@ -332,6 +335,8 @@
 				el.on('focus show.sys-datepicker', function () {
 					var p = el.offset();
 
+					setInputDate(el.val().trim());
+
 					dp.css({
 						position: 'absolute',
 						left: p.left,
@@ -379,6 +384,23 @@
 					selectedDates = dates;
 
 					dp.find('.sys-datepicker-day[data-date="' + date + '"]').removeClass('sys-datepicker-day-selected');
+				}
+
+				function setInputDate(date) {
+					dp.find('.sys-datepicker-day[data-date="' + inputDate + '"]').removeClass('sys-datepicker-day-input');
+					var isSelected = false;
+					for (var i in selectedDates) {
+						if (selectedDates[i] == inputDate) {
+							isSelected = true;
+							break;
+						}
+					}
+					if (!isSelected) {
+						dp.find('.sys-datepicker-day[data-date="' + inputDate + '"]').removeClass('sys-datepicker-day-selected');
+					}
+
+					inputDate = date;
+					dp.find('.sys-datepicker-day[data-date="' + inputDate + '"]').addClass('sys-datepicker-day-selected sys-datepicker-day-input');
 				}
 
 				el.on('addDates.sys-datepicker', function (e, dates) {
