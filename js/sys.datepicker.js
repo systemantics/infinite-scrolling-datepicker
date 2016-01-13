@@ -245,7 +245,6 @@
 
 					if ($.isFunction(settings.convertDisplayDateToISO)) {
 						val = settings.convertDisplayDateToISO(val);
-						console.log(val);
 						if (typeof val !== 'string' && !(val instanceof String)) {
 							return;
 						}
