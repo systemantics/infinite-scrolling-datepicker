@@ -1,6 +1,6 @@
 /*
  * Systemantics infinite scrolling datepicker
- * v0.12
+ * v0.12.1
  *
  * Copyright (C) 2015–2016 by Systemantics GmbH
  *
@@ -150,6 +150,10 @@
 		return formatDate(today.getFullYear(), today.getMonth() + 1, today.getDate());
 	}
 
+	function isValidISODate(date) {
+		return date.match(/^\d{4}-\d{2}-\d{2}/) == true;
+	}
+
 	$.fn.datepicker = function (options, value) {
 		if (options == 'show') {
 			this.trigger('show.sys-datepicker');
@@ -188,6 +192,10 @@
 				}
 
 				el.addClass('sys-datepicker-attached');
+
+				if (!isValidISODate(settings.defaultDate)) {
+					settings.defaultDate = getTodayISO();
+				}
 
 				var dp = $('<div class="sys-datepicker" style="display:none"/>').appendTo('body'),
 					dpContent = $('<div class="sys-datepicker-content"/>').appendTo(dp),
