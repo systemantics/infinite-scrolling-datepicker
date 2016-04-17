@@ -1,6 +1,6 @@
 /*
  * Systemantics infinite scrolling datepicker
- * v0.12.1
+ * v0.12.2
  *
  * Copyright (C) 2015–2016 by Systemantics GmbH
  *
@@ -340,7 +340,7 @@
 					el.focus();
 				});
 
-				el.on('focus show.sys-datepicker', function () {
+				el.on('focus click show.sys-datepicker', function () {
 					var p = el.offset();
 
 					setInputDate(el.val().trim());
