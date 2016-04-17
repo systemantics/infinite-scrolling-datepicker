@@ -340,7 +340,7 @@
 					el.focus();
 				});
 
-				el.on('focus show.sys-datepicker', function () {
+				el.on('focus click show.sys-datepicker', function () {
 					var p = el.offset();
 
 					setInputDate(el.val().trim());
