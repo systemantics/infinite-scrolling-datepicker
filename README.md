@@ -8,6 +8,11 @@ The answer is simple: Because it’s infinitely scrolling.
 Most (if not all) datepickers resemble traditional paper calendars with one month on view
 at a time. In a digital setting with virtually endless viewports, this is an unnecessary limitation.
 
+## Don’t use jQuery 1.12.0, use 1.12.3 instead
+
+Note that the infinite scrolling datepicker is not compatible with jQuery 1.12.0 due to some internal
+weirdness in jQuery. Use jQuery 1.12.3 which works fine.
+
 ## Demo and examples
 
 A [demo page with several examples](https://www.systemantics.net/datepicker/demo.html) is available.
